@@ -1,0 +1,23 @@
+--- 
+phases: 
+  install:
+    commands:
+      - apt-get install make -y
+  build: 
+    commands: 
+      - "echo Build started on `date`"
+      - "echo Building the Docker image..."
+      - "make build-image"
+      - "docker tag $IMAGE_REPO_NAME:latest $IMAGE_REPO_NAME:$IMAGE_TAG_TIMESTAMP"
+      - "docker tag $IMAGE_REPO_NAME:latest $IMAGE_REPO_NAME:latest"
+  post_build: 
+    commands: 
+      - "echo Build completed on `date`"
+      - "echo Pushing the Docker image..."
+      - "docker push $IMAGE_REPO_NAME:$IMAGE_TAG_TIMESTAMP"
+      - "docker push $IMAGE_REPO_NAME:latest"
+  pre_build: 
+    commands: 
+      - "echo Logging in to Docker Hub..."
+      - "docker login --username=\"$DOCKERHUB_USER\" --password=\"$DOCKERHUB_PASS\""
+version: 0.2
