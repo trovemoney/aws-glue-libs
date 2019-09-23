@@ -2,7 +2,7 @@
 env:
   variables:
     build_version: "0.1"
-  phases: 
+phases: 
   install:
     commands:
       - apt-get install make -y
