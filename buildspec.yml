@@ -5,7 +5,7 @@ env:
 phases: 
   install:
     commands:
-      - apt-get install make -y
+      - apt-get install make libxml2-utils -y
   build: 
     commands: 
       - "echo Build started on `date`"
