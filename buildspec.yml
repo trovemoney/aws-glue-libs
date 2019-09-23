@@ -10,7 +10,7 @@ phases:
     commands: 
       - "echo Build started on `date`"
       - "echo Building the Docker image..."
-      - "make build-image"
+      - "make SHELL='sh -xv' build-image"
       - "docker tag $IMAGE_REPO_NAME:latest $IMAGE_REPO_NAME:$IMAGE_TAG_TIMESTAMP"
       - "docker tag $IMAGE_REPO_NAME:latest $IMAGE_REPO_NAME:latest"
   post_build: 

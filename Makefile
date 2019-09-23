@@ -1,6 +1,6 @@
 # Glue Local Development Environment - Docker image builder
 
-SHELL := /bin/bash
+
 GLUE_VERSION := $(shell bash -c "echo -e 'setns x=http://maven.apache.org/POM/4.0.0\ncat /x:project/x:version/text()' | xmllint --shell pom.xml | grep -e '^\d.*' | cut -c1-3")
 
 MAVEN_URL := "https://aws-glue-etl-artifacts.s3.amazonaws.com/glue-common/apache-maven-3.6.0-bin.tar.gz"
