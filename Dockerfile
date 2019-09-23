@@ -18,5 +18,5 @@ ENV PYSPARK_PYTHON "${PYTHON_BIN}"
 WORKDIR /glue
 ADD . /glue
 
-RUN bash -l -c 'bash ~/.profile && bash /glue/bin/glue-setup.sh && sed -i -e "/^mvn/ s/^/#/" /glue/bin/glue-setup.sh; rm $(ls -d /glue/*jars*)/netty* && wget -O /glue/conf/log4j.properties https://gist.githubusercontent.com/svajiraya/aecb45c038e7bba86429646a68b542bb/raw/0cc6229d3b745a0092be75bbbf9476fa17318004/log4j.properties && sed -i -e \'/enableHiveSupport\(\)/d\' $SPARK_HOME/python/pyspark/shell.py'
+RUN bash -l -c 'bash ~/.profile && bash /glue/bin/glue-setup.sh && sed -i -e "/^mvn/ s/^/#/" /glue/bin/glue-setup.sh; rm $(ls -d /glue/*jars*)/netty* && wget -O /glue/conf/log4j.properties https://gist.githubusercontent.com/svajiraya/aecb45c038e7bba86429646a68b542bb/raw/0cc6229d3b745a0092be75bbbf9476fa17318004/log4j.properties && sed -i -e "/enableHiveSupport()/d" $SPARK_HOME/python/pyspark/shell.py'
 CMD [ "bash", "-l", "-c", "gluepyspark" ]
