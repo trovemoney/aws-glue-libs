@@ -13,8 +13,10 @@ SPARK_URL := "https://aws-glue-etl-artifacts.s3.amazonaws.com/glue-1.0/spark-2.4
 PYTHON_BIN := "python3"
 endif
 
+build-image-aws:
+	docker build -t glue-dev-$(GLUE_VERSION):latest --build-arg GLUE_VER=$(GLUE_VERSION) --build-arg SPARK_URL=$(SPARK_URL) --build-arg MAVEN_URL=$(MAVEN_URL) --build-arg PYTHON_BIN=$(PYTHON_BIN) .
+	aws ssm put-parameter --name /codebuild/aws-glue-libs/IMAGE_REPO_NAME --overwrite --value glue-dev-$(GLUE_VERSION) --type String;
+	aws ssm put-parameter --name /codebuild/aws-glue-libs/IMAGE_TAG_TIMESTAMP --overwrite --value `date +%Y%m%d_%H%M%S%Z` --type String;
+
 build-image:
 	docker build -t glue-dev-$(GLUE_VERSION):latest --build-arg GLUE_VER=$(GLUE_VERSION) --build-arg SPARK_URL=$(SPARK_URL) --build-arg MAVEN_URL=$(MAVEN_URL) --build-arg PYTHON_BIN=$(PYTHON_BIN) .
-	export IMAGE_REPO_NAME=glue-dev-$(GLUE_VERSION);
-	export IMAGE_TAG_TIMESTAMP=`date +%Y%m%d_%H%M%S%Z`;
-

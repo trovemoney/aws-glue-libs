@@ -10,15 +10,13 @@ phases:
     commands: 
       - "echo Build started on `date`"
       - "echo Building the Docker image..."
-      - "make SHELL='sh -xv' build-image"
-      - "docker tag $IMAGE_REPO_NAME:latest $IMAGE_REPO_NAME:$IMAGE_TAG_TIMESTAMP"
-      - "docker tag $IMAGE_REPO_NAME:latest $IMAGE_REPO_NAME:latest"
+      - "make SHELL='sh -xv' build-image-aws && docker tag $(aws ssm get-parameter --name /codebuild/aws-glue-libs/IMAGE_REPO_NAME --with-decryption --query 'Parameter.Value' --output text):latest $DOCKERHUB_USER/$(aws ssm get-parameter --name /codebuild/aws-glue-libs/IMAGE_REPO_NAME --with-decryption --query 'Parameter.Value' --output text):$(aws ssm get-parameter --name /codebuild/aws-glue-libs/IMAGE_TAG_TIMESTAMP --with-decryption --query 'Parameter.Value' --output text) && docker tag $(aws ssm get-parameter --name /codebuild/aws-glue-libs/IMAGE_REPO_NAME --with-decryption --query 'Parameter.Value' --output text):latest $DOCKERHUB_USER/$(aws ssm get-parameter --name /codebuild/aws-glue-libs/IMAGE_REPO_NAME --with-decryption --query 'Parameter.Value' --output text):latest"
   post_build: 
     commands: 
       - "echo Build completed on `date`"
       - "echo Pushing the Docker image..."
-      - "docker push $IMAGE_REPO_NAME:$IMAGE_TAG_TIMESTAMP"
-      - "docker push $IMAGE_REPO_NAME:latest"
+      - "docker push $DOCKERHUB_USER/$(aws ssm get-parameter --name /codebuild/aws-glue-libs/IMAGE_REPO_NAME --with-decryption --query 'Parameter.Value' --output text):$(aws ssm get-parameter --name /codebuild/aws-glue-libs/IMAGE_TAG_TIMESTAMP --with-decryption --query 'Parameter.Value' --output text)"
+      - "docker push $DOCKERHUB_USER/$(aws ssm get-parameter --name /codebuild/aws-glue-libs/IMAGE_REPO_NAME --with-decryption --query 'Parameter.Value' --output text):latest"
   pre_build: 
     commands: 
       - "echo Logging in to Docker Hub..."
