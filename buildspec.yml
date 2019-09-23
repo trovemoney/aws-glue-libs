@@ -1,0 +1,24 @@
+--- 
+env:
+  variables:
+    build_version: "0.1"
+phases: 
+  install:
+    commands:
+      - apt-get install make libxml2-utils -y
+  build: 
+    commands: 
+      - "echo Build started on `date`"
+      - "echo Building the Docker image..."
+      - "make SHELL='sh -xv' build-image-aws && docker tag $(aws ssm get-parameter --name /codebuild/aws-glue-libs/IMAGE_REPO_NAME --with-decryption --query 'Parameter.Value' --output text):latest $DOCKERHUB_USER/$(aws ssm get-parameter --name /codebuild/aws-glue-libs/IMAGE_REPO_NAME --with-decryption --query 'Parameter.Value' --output text):$(aws ssm get-parameter --name /codebuild/aws-glue-libs/IMAGE_TAG_TIMESTAMP --with-decryption --query 'Parameter.Value' --output text) && docker tag $(aws ssm get-parameter --name /codebuild/aws-glue-libs/IMAGE_REPO_NAME --with-decryption --query 'Parameter.Value' --output text):latest $DOCKERHUB_USER/$(aws ssm get-parameter --name /codebuild/aws-glue-libs/IMAGE_REPO_NAME --with-decryption --query 'Parameter.Value' --output text):latest"
+  post_build: 
+    commands: 
+      - "echo Build completed on `date`"
+      - "echo Pushing the Docker image..."
+      - "docker push $DOCKERHUB_USER/$(aws ssm get-parameter --name /codebuild/aws-glue-libs/IMAGE_REPO_NAME --with-decryption --query 'Parameter.Value' --output text):$(aws ssm get-parameter --name /codebuild/aws-glue-libs/IMAGE_TAG_TIMESTAMP --with-decryption --query 'Parameter.Value' --output text)"
+      - "docker push $DOCKERHUB_USER/$(aws ssm get-parameter --name /codebuild/aws-glue-libs/IMAGE_REPO_NAME --with-decryption --query 'Parameter.Value' --output text):latest"
+  pre_build: 
+    commands: 
+      - "echo Logging in to Docker Hub..."
+      - "docker login --username=\"$DOCKERHUB_USER\" --password=\"$DOCKERHUB_PASS\""
+version: 0.2
