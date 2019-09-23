@@ -18,7 +18,5 @@ ENV PYSPARK_PYTHON "${PYTHON_BIN}"
 WORKDIR /glue
 ADD . /glue
 
-# Temporary hotfix. Can be removed once Glue team removes netty from transitive dependecies.
 RUN bash -l -c 'bash ~/.profile && bash /glue/bin/glue-setup.sh && sed -i -e "/^mvn/ s/^/#/" /glue/bin/glue-setup.sh; rm $(ls -d /glue/*jars*)/netty*'
-
 CMD [ "bash", "-l", "-c", "gluepyspark" ]
