@@ -1,6 +1,6 @@
 FROM openjdk:8
 
-LABEL AUTHOR="Subramanya Vajiraya (subvj@amazon.com)"
+LABEL AUTHOR="Subramanya Vajiraya (https://github.com/svajiraya)"
 ARG GLUE_VER
 ARG SPARK_URL
 ARG MAVEN_URL
