@@ -18,5 +18,5 @@ ENV PYSPARK_PYTHON "${PYTHON_BIN}"
 WORKDIR /glue
 ADD . /glue
 
-RUN bash -l -c 'bash ~/.profile && bash /glue/bin/glue-setup.sh && wget -O /glue/conf/log4j.properties https://gist.githubusercontent.com/svajiraya/aecb45c038e7bba86429646a68b542bb/raw/0cc6229d3b745a0092be75bbbf9476fa17318004/log4j.properties'
+RUN bash -l -c 'bash ~/.profile && bash /glue/bin/glue-setup.sh && wget -O /glue/conf/log4j.properties https://gist.githubusercontent.com/svajiraya/aecb45c038e7bba86429646a68b542bb/raw/0cc6229d3b745a0092be75bbbf9476fa17318004/log4j.properties && pip3 install boto3 pytest'
 CMD [ "bash", "-l", "-c", "gluepyspark" ]
